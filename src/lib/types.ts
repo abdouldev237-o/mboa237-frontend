@@ -25,6 +25,7 @@ export interface Shop {
   delivery_info: string;
   free_delivery_from: number | null;
   views_count: number;
+  days_left: number;
   whatsapp_clicks: number;
   products_count: number;
   rating: string;

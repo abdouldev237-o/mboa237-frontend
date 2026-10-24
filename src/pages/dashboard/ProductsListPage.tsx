@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import {
   AlertCircle,
   Edit,
-  Eye,
-  Filter,
   Grid3X3,
   LayoutGrid,
   Package,
@@ -13,7 +11,6 @@ import {
   RefreshCw,
   Search,
   Trash2,
-  TrendingUp,
   X,
 } from "lucide-react";
 import { getErrorMessage, ownerApi } from "@/lib/api";

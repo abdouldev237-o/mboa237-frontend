@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   AlertCircle, ArrowRight, Calendar, Check, CheckCircle2,
   Clock, CreditCard, Loader2, Lock, RefreshCw, ShieldCheck,
-  Sparkles, Zap,
+  Sparkles, 
 } from "lucide-react";
 import { useToast } from "@/components/Toast";
 import { http, getErrorMessage } from "@/lib/api";

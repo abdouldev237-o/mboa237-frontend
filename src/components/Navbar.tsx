@@ -10,8 +10,6 @@ import {
   LogIn,
   UserPlus,
   LogOut,
-  User,
-  ShoppingBag,
   Package,
   Tags,
   Settings,

@@ -257,7 +257,7 @@ export default function ShopsListPage() {
         {loading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <SkeletonBox key={i} className="h-64 w-full" rounded="3xl" />
+              <SkeletonBox key={i} className="h-64 w-full" rounded="2xl" />
             ))}
           </div>
         ) : error ? (

@@ -2,14 +2,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  AlertCircle,
   ArrowRight,
   ArrowUpRight,
   Calendar,
   ChartNoAxesCombined,
   Check,
   CheckCircle2,
-  ChevronRight,
   CircleHelp,
   Copy,
   Eye,
@@ -19,7 +17,6 @@ import {
   MapPin,
   MessageCircle,
   Package,
-  Percent,
   Plus,
   RefreshCw,
   Settings2,
@@ -46,9 +43,7 @@ import { ErrorState } from "@/components/ErrorState";
 /* =========================================================
    HELPERS
    ========================================================= */
-function fmtFcfa(n: number) {
-  return n.toLocaleString("fr-FR").replace(/\u202f/g, " ").replace(/\u00a0/g, " ") + " F";
-}
+
 
 function useCountUp(target: number, duration = 1200) {
   const [value, setValue] = useState(0);

@@ -26,12 +26,8 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
-  Clock,
-  Copy,
   Eye,
-  Heart,
   Info,
-  Loader2,
   Lock,
   MapPin,
   MessageCircle,
@@ -46,7 +42,6 @@ import {
   Star,
   Store,
   Tag,
-  ThumbsUp,
   Truck,
   X,
   Zap,
@@ -1939,101 +1934,8 @@ function MobileStoreQuickBar({
   );
 }
 
-/* =========================================================
-   CATALOGUE PRESENTATION HELPERS
-   Small presentational building blocks keep the page easier
-   to maintain while preserving the existing API contracts.
-   ========================================================= */
 
-function CatalogueSectionLabel({
-  title,
-  detail,
-}: {
-  title: string;
-  detail?: string;
-}) {
-  return (
-    <div className="mboa-mobile-section-label">
-      <strong>{title}</strong>
-      {detail ? <span>{detail}</span> : null}
-    </div>
-  );
-}
 
-function StockPill({ available }: { available: boolean }) {
-  return available ? (
-    <span className="mboa-pill mboa-pill-success">
-      <CheckCircle2 size={12} aria-hidden="true" />
-      Disponible
-    </span>
-  ) : (
-    <span className="mboa-pill mboa-pill-warning">
-      <X size={12} aria-hidden="true" />
-      Indisponible
-    </span>
-  );
-}
-
-function ProductImagePlaceholder({
-  label = "Image du produit",
-}: {
-  label?: string;
-}) {
-  return (
-    <div
-      className="mboa-image-placeholder"
-      role="img"
-      aria-label={label}
-    >
-      <Package size={42} strokeWidth={1.25} aria-hidden="true" />
-    </div>
-  );
-}
-
-function CatalogueHint({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <div className="mboa-catalogue-hint">
-      <span className="mboa-catalogue-hint-dot" aria-hidden="true" />
-      <span>{children}</span>
-    </div>
-  );
-}
-
-function ResponsiveEmptyMessage({
-  title,
-  description,
-  onReset,
-}: {
-  title: string;
-  description: string;
-  onReset?: () => void;
-}) {
-  return (
-    <section className="mboa-empty-state rounded-3xl border border-slate-200 bg-white shadow-sm">
-      <span className="mboa-empty-icon" aria-hidden="true">
-        <Search size={27} strokeWidth={1.8} />
-      </span>
-      <h3 className="text-base font-black text-slate-900">{title}</h3>
-      <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">
-        {description}
-      </p>
-      {onReset ? (
-        <button
-          type="button"
-          onClick={onReset}
-          className="mboa-retry-button mt-5"
-        >
-          <X size={15} aria-hidden="true" />
-          Effacer les filtres
-        </button>
-      ) : null}
-    </section>
-  );
-}
 
 /* =========================================================
    RESILIENT SKELETON PRIMITIVES
@@ -2263,105 +2165,16 @@ function getProductFriendlyErrorMessage(error: unknown) {
   return message;
 }
 
-/* =========================================================
-   IMAGE LOADING HELPERS
-   Native lazy loading is kept for off-screen product cards.
-   The first visible product can be prioritized by passing
-   eager=true; use this helper when splitting the card later.
-   ========================================================= */
 
-function getImageLoadingMode(index: number) {
-  return index < 2 ? "eager" : "lazy";
-}
 
-function getImageDecodingMode() {
-  return "async" as const;
-}
 
-/* =========================================================
-   SHARE FALLBACK
-   The existing share callback remains the source of truth.
-   This helper can be used if native share support is added.
-   ========================================================= */
 
-async function shareShopLink(url: string, shopName: string) {
-  if (typeof navigator === "undefined") return false;
-
-  try {
-    if (navigator.share) {
-      await navigator.share({
-        title: shopName,
-        text: `Découvrez la boutique ${shopName} sur Mboa237.`,
-        url,
-      });
-      return true;
-    }
-
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(url);
-      return true;
-    }
-  } catch {
-    return false;
-  }
-
-  return false;
-}
-
-/* =========================================================
-   CATALOGUE FILTER HELPERS
-   Pure helpers make future filter features predictable and
-   easy to unit-test without changing the API contracts.
-   ========================================================= */
-
-function normalizeCatalogueQuery(query: string) {
-  return query
-    .trim()
-    .toLocaleLowerCase("fr-FR")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function compareProductPrices(a: Product, b: Product) {
-  return Number(a.price || 0) - Number(b.price || 0);
-}
-
-function getDiscountPercentage(wasPrice: number, currentPrice: number) {
-  if (!Number.isFinite(wasPrice) || wasPrice <= 0) return 0;
-  if (!Number.isFinite(currentPrice) || currentPrice < 0) return 0;
-  if (currentPrice >= wasPrice) return 0;
-
-  return Math.round(((wasPrice - currentPrice) / wasPrice) * 100);
-}
 
 /* =========================================================
    MOBILE QUALITY CHECKLIST
    This checklist documents the behavior expected from the
    finished responsive page for later manual verification.
    ========================================================= */
-
-const MOBILE_SHOP_PAGE_CHECKLIST = [
-  "Header content does not overflow at 320px viewport width.",
-  "Shop name truncates instead of pushing action buttons off-screen.",
-  "Catalogue quick actions remain reachable on small screens.",
-  "Product cards use two columns on phones.",
-  "Product cards use three columns on medium screens.",
-  "Product cards use four columns on wide desktop screens.",
-  "Long product titles wrap without overflowing the card.",
-  "Prices remain readable and use tabular numerals.",
-  "Bottom action bar respects the iOS safe-area inset.",
-  "Product modal can be dismissed with Escape.",
-  "Product gallery arrows remain large enough to tap.",
-  "Reduced-motion preferences disable nonessential animations.",
-  "Images below the fold use native lazy loading.",
-  "Product cards retain a visible keyboard focus indicator.",
-  "The catalogue has an empty state when filters return no results.",
-  "Network errors are not silently described as empty inventory.",
-  "WhatsApp links use noopener and noreferrer.",
-  "The page remains usable without hover interactions.",
-  "Buttons and inputs retain visible focus rings.",
-  "Horizontal category scrolling does not show a scrollbar.",
-] as const;
 
 
 // 7. FOOTER
