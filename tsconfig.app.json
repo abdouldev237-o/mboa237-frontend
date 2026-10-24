@@ -30,7 +30,6 @@
     "erasableSyntaxOnly": true,
 
     /* Path Alias for Mboa237 */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
