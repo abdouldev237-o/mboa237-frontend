@@ -28,7 +28,6 @@ import {
   ChevronRight,
   Eye,
   Info,
-  Lock,
   MapPin,
   MessageCircle,
   Minus,
@@ -1562,7 +1561,6 @@ function ProductDetailModal({
   }, []);
 
   const cover = images[activeImage] || null;
-  const discount = Number(display.discount_percent || 0);
   const total = display.price * qty;
 
   return (
@@ -1977,104 +1975,104 @@ function MobileProductSkeleton() {
   );
 }
 
-function MobileProductGridSkeleton({
-  count = 6,
-}: {
-  count?: number;
-}) {
-  return (
-    <div
-      className="mboa-product-grid"
-      aria-label="Chargement du catalogue"
-      role="status"
-    >
-      {Array.from({ length: count }, (_, index) => (
-        <MobileProductSkeleton key={`mobile-product-skeleton-${index}`} />
-      ))}
-      <span className="sr-only">Chargement des produits…</span>
-    </div>
-  );
-}
+// function MobileProductGridSkeleton({
+//   count = 6,
+// }: {
+//   count?: number;
+// }) {
+//   return (
+//     <div
+//       className="mboa-product-grid"
+//       aria-label="Chargement du catalogue"
+//       role="status"
+//     >
+//       {Array.from({ length: count }, (_, index) => (
+//         <MobileProductSkeleton key={`mobile-product-skeleton-${index}`} />
+//       ))}
+//       <span className="sr-only">Chargement des produits…</span>
+//     </div>
+//   );
+// }
 
 /* =========================================================
    SMALL SCREEN AND ACCESSIBILITY UTILITIES
    ========================================================= */
 
-function useReducedMotionPreference() {
-  const [reducedMotion, setReducedMotion] = useState(false);
+// function useReducedMotionPreference() {
+//   const [reducedMotion, setReducedMotion] = useState(false);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return;
+//   useEffect(() => {
+//     if (typeof window === "undefined" || !window.matchMedia) return;
 
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(media.matches);
-    update();
+//     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+//     const update = () => setReducedMotion(media.matches);
+//     update();
 
-    if (typeof media.addEventListener === "function") {
-      media.addEventListener("change", update);
-      return () => media.removeEventListener("change", update);
-    }
+//     if (typeof media.addEventListener === "function") {
+//       media.addEventListener("change", update);
+//       return () => media.removeEventListener("change", update);
+//     }
 
-    media.addListener(update);
-    return () => media.removeListener(update);
-  }, []);
+//     media.addListener(update);
+//     return () => media.removeListener(update);
+//   }, []);
 
-  return reducedMotion;
-}
+//   return reducedMotion;
+// }
 
-function useEscapeKey(onEscape: () => void, enabled = true) {
-  const callbackRef = useRef(onEscape);
+// function useEscapeKey(onEscape: () => void, enabled = true) {
+//   const callbackRef = useRef(onEscape);
 
-  useEffect(() => {
-    callbackRef.current = onEscape;
-  }, [onEscape]);
+//   useEffect(() => {
+//     callbackRef.current = onEscape;
+//   }, [onEscape]);
 
-  useEffect(() => {
-    if (!enabled) return;
+//   useEffect(() => {
+//     if (!enabled) return;
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      callbackRef.current();
-    };
+//     const handleKeyDown = (event: KeyboardEvent) => {
+//       if (event.key !== "Escape") return;
+//       callbackRef.current();
+//     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [enabled]);
-}
+//     window.addEventListener("keydown", handleKeyDown);
+//     return () => window.removeEventListener("keydown", handleKeyDown);
+//   }, [enabled]);
+// }
 
-function formatProductCount(count: number) {
-  if (!Number.isFinite(count) || count < 0) return "0 produit";
-  return `${count} produit${count === 1 ? "" : "s"}`;
-}
+// function formatProductCount(count: number) {
+//   if (!Number.isFinite(count) || count < 0) return "0 produit";
+//   return `${count} produit${count === 1 ? "" : "s"}`;
+// }
 
-function getProductImageList(product: Product) {
-  const candidates = [
-    product.image,
-    product.second_image,
-    product.third_image,
-    ...(product.images || []),
-  ];
+// function getProductImageList(product: Product) {
+//   const candidates = [
+//     product.image,
+//     product.second_image,
+//     product.third_image,
+//     ...(product.images || []),
+//   ];
 
-  return Array.from(
-    new Set(
-      candidates.filter(
-        (image): image is string =>
-          typeof image === "string" && image.trim().length > 0
-      )
-    )
-  );
-}
+//   return Array.from(
+//     new Set(
+//       candidates.filter(
+//         (image): image is string =>
+//           typeof image === "string" && image.trim().length > 0
+//       )
+//     )
+//   );
+// }
 
-function isValidExternalUrl(value: string | undefined | null) {
-  if (!value) return false;
+// function isValidExternalUrl(value: string | undefined | null) {
+//   if (!value) return false;
 
-  try {
-    const url = new URL(value, window.location.origin);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
-}
+//   try {
+//     const url = new URL(value, window.location.origin);
+//     return url.protocol === "https:" || url.protocol === "http:";
+//   } catch {
+//     return false;
+//   }
+// }
 
 /* =========================================================
    MOBILE INTERACTION GUIDELINES
@@ -2082,16 +2080,16 @@ function isValidExternalUrl(value: string | undefined | null) {
    overflow caused by long product names or large prices.
    ========================================================= */
 
-const MOBILE_INTERACTION_GUIDELINES = {
-  minimumTapTarget: 44,
-  preferredHorizontalPadding: 16,
-  compactGridColumns: 2,
-  tabletGridColumns: 3,
-  desktopGridColumns: 4,
-  preferredProductImageRatio: "4 / 4.5",
-  useSafeAreaInsets: true,
-  preserveExistingResultsDuringRefresh: true,
-} as const;
+// const MOBILE_INTERACTION_GUIDELINES = {
+//   minimumTapTarget: 44,
+//   preferredHorizontalPadding: 16,
+//   compactGridColumns: 2,
+//   tabletGridColumns: 3,
+//   desktopGridColumns: 4,
+//   preferredProductImageRatio: "4 / 4.5",
+//   useSafeAreaInsets: true,
+//   preserveExistingResultsDuringRefresh: true,
+// } as const;
 
 /* =========================================================
    DESIGN TOKENS
@@ -2100,41 +2098,41 @@ const MOBILE_INTERACTION_GUIDELINES = {
    throughout this page, so no external CSS package is needed.
    ========================================================= */
 
-const SHOP_PAGE_DESIGN_TOKENS = {
-  color: {
-    ink: "#0f172a",
-    muted: "#64748b",
-    border: "#e2e8f0",
-    surface: "#ffffff",
-    canvas: "#f8faf9",
-    primary: "#047857",
-    primaryDark: "#064e3b",
-    primarySoft: "#ecfdf5",
-    success: "#16a34a",
-    whatsapp: "#16a34a",
-    warning: "#f59e0b",
-    danger: "#e11d48",
-  },
-  radius: {
-    control: "0.875rem",
-    card: "1.25rem",
-    panel: "2rem",
-    pill: "9999px",
-  },
-  spacing: {
-    pageMobile: "1rem",
-    pageTablet: "1.5rem",
-    pageDesktop: "2.5rem",
-    cardMobile: "0.75rem",
-    section: "3rem",
-  },
-  responsive: {
-    mobile: 480,
-    tablet: 640,
-    laptop: 1024,
-    desktop: 1280,
-  },
-} as const;
+// const SHOP_PAGE_DESIGN_TOKENS = {
+//   color: {
+//     ink: "#0f172a",
+//     muted: "#64748b",
+//     border: "#e2e8f0",
+//     surface: "#ffffff",
+//     canvas: "#f8faf9",
+//     primary: "#047857",
+//     primaryDark: "#064e3b",
+//     primarySoft: "#ecfdf5",
+//     success: "#16a34a",
+//     whatsapp: "#16a34a",
+//     warning: "#f59e0b",
+//     danger: "#e11d48",
+//   },
+//   radius: {
+//     control: "0.875rem",
+//     card: "1.25rem",
+//     panel: "2rem",
+//     pill: "9999px",
+//   },
+//   spacing: {
+//     pageMobile: "1rem",
+//     pageTablet: "1.5rem",
+//     pageDesktop: "2.5rem",
+//     cardMobile: "0.75rem",
+//     section: "3rem",
+//   },
+//   responsive: {
+//     mobile: 480,
+//     tablet: 640,
+//     laptop: 1024,
+//     desktop: 1280,
+//   },
+// } as const;
 
 /* =========================================================
    ERROR MESSAGE GUIDELINES
@@ -2155,15 +2153,15 @@ function getShopFriendlyErrorMessage(error: unknown) {
   return "Une erreur est survenue. Réessayez dans quelques instants.";
 }
 
-function getProductFriendlyErrorMessage(error: unknown) {
-  const message = getShopFriendlyErrorMessage(error);
+// function getProductFriendlyErrorMessage(error: unknown) {
+//   const message = getShopFriendlyErrorMessage(error);
 
-  if (/network|fetch|connexion|internet/i.test(message)) {
-    return "Le catalogue ne répond pas pour le moment. Vérifiez votre connexion.";
-  }
+//   if (/network|fetch|connexion|internet/i.test(message)) {
+//     return "Le catalogue ne répond pas pour le moment. Vérifiez votre connexion.";
+//   }
 
-  return message;
-}
+//   return message;
+// }
 
 
 

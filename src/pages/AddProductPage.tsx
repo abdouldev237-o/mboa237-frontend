@@ -36,7 +36,7 @@ import {
   Zap,
 } from "lucide-react";
 import { getErrorMessage, ownerApi } from "@/lib/api";
-import type { Category, Product } from "@/lib/types";
+import type { Category} from "@/lib/types";
 import { useToast } from "@/components/Toast";
 import { Field } from "@/components/Field";
 
