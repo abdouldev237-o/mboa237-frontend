@@ -1955,25 +1955,25 @@ function SkeletonBlock({
   );
 }
 
-function MobileProductSkeleton() {
-  return (
-    <article
-      aria-hidden="true"
-      className="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white"
-    >
-      <SkeletonBlock className="aspect-[4/4.5] w-full rounded-none" />
-      <div className="space-y-3 p-3.5">
-        <SkeletonBlock className="h-2.5 w-1/3 rounded-md" />
-        <SkeletonBlock className="h-4 w-full rounded-md" />
-        <SkeletonBlock className="h-4 w-4/5 rounded-md" />
-        <div className="flex items-center justify-between pt-2">
-          <SkeletonBlock className="h-5 w-2/5 rounded-md" />
-          <SkeletonBlock className="h-8 w-8 rounded-xl" />
-        </div>
-      </div>
-    </article>
-  );
-}
+// function MobileProductSkeleton() {
+//   return (
+//     <article
+//       aria-hidden="true"
+//       className="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white"
+//     >
+//       <SkeletonBlock className="aspect-[4/4.5] w-full rounded-none" />
+//       <div className="space-y-3 p-3.5">
+//         <SkeletonBlock className="h-2.5 w-1/3 rounded-md" />
+//         <SkeletonBlock className="h-4 w-full rounded-md" />
+//         <SkeletonBlock className="h-4 w-4/5 rounded-md" />
+//         <div className="flex items-center justify-between pt-2">
+//           <SkeletonBlock className="h-5 w-2/5 rounded-md" />
+//           <SkeletonBlock className="h-8 w-8 rounded-xl" />
+//         </div>
+//       </div>
+//     </article>
+//   );
+// }
 
 // function MobileProductGridSkeleton({
 //   count = 6,
@@ -2141,17 +2141,17 @@ function MobileProductSkeleton() {
    they are intended for future inline retry panels.
    ========================================================= */
 
-function getShopFriendlyErrorMessage(error: unknown) {
-  if (error instanceof TypeError) {
-    return "Vérifiez votre connexion Internet puis réessayez.";
-  }
+// function getShopFriendlyErrorMessage(error: unknown) {
+//   if (error instanceof TypeError) {
+//     return "Vérifiez votre connexion Internet puis réessayez.";
+//   }
 
-  if (error instanceof Error && error.message.trim()) {
-    return error.message;
-  }
+//   if (error instanceof Error && error.message.trim()) {
+//     return error.message;
+//   }
 
-  return "Une erreur est survenue. Réessayez dans quelques instants.";
-}
+//   return "Une erreur est survenue. Réessayez dans quelques instants.";
+// }
 
 // function getProductFriendlyErrorMessage(error: unknown) {
 //   const message = getShopFriendlyErrorMessage(error);
