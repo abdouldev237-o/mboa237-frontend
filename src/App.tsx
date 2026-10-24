@@ -46,6 +46,7 @@ export default function App() {
               <Route path="/shops" element={<ShopsListPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/signup" element={<RegisterPage />} />
               <Route path="/help" element={<NotFoundPage />} />
               <Route path="*" element={<NotFoundPage />} />
               <Route path="/payment/callback" element={<PaymentCallbackPage />} />
