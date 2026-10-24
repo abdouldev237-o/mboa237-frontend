@@ -1942,18 +1942,18 @@ function MobileStoreQuickBar({
    refreshes instead of replacing the whole catalogue.
    ========================================================= */
 
-function SkeletonBlock({
-  className = "",
-}: {
-  className?: string;
-}) {
-  return (
-    <span
-      aria-hidden="true"
-      className={`mboa-skeleton block rounded-xl ${className}`}
-    />
-  );
-}
+// function SkeletonBlock({
+//   className = "",
+// }: {
+//   className?: string;
+// }) {
+//   return (
+//     <span
+//       aria-hidden="true"
+//       className={`mboa-skeleton block rounded-xl ${className}`}
+//     />
+//   );
+// }
 
 // function MobileProductSkeleton() {
 //   return (
@@ -2243,10 +2243,4 @@ function CategoryChip({ active, onClick, children }: { active: boolean; onClick:
     </button>
   );
 }
-
-
-
-
-
-// ... (dans ton composant)
 
