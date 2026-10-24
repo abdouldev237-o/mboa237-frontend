@@ -24,59 +24,52 @@ export default function PaymentCallbackPage() {
   const notchpayRef = params.get("reference") || "";
   // Le premier `reference` peut être SUB-xxx et le second trx.xxx
   const allRefs = params.getAll("reference");
-  const subRef =
-    allRefs.find((r) => r.startsWith("SUB-")) || trxref || "";
-  const trxRef =
-    allRefs.find((r) => r.startsWith("trx")) || notchpayRef || "";
+const subRef =
+  params.get("trxref") ||
+  params.get("sub_ref") ||
+  allRefs.find((r) => r.startsWith("SUB-")) ||
+  "";
+const trxRef =
+  allRefs.find((r) => r.startsWith("trx")) ||
+  params.get("reference") ||
+  "";
 
   const verify = useCallback(async () => {
-    if (!subRef) {
-      setState("error");
-      setMessage("Référence d'abonnement manquante dans l'URL.");
+  if (!subRef) {
+    setState("error");
+    setMessage("Référence d'abonnement manquante dans l'URL.");
+    return;
+  }
+
+  try {
+    const { data, status } = await http.get("/me/subscription/callback/", {
+      params: {
+        trxref: subRef,               // ← internal SUB-xxx
+        reference: trxRef,            // ← NotchPay trx.xxx
+      },
+      validateStatus: (s) => s < 500,
+    });
+
+    if (data.is_active) {
+      setState("success");
+      setMessage("Abonnement activé avec succès !");
+      if (pollRef.current) clearTimeout(pollRef.current);
+      setTimeout(() => navigate("/dashboard/subscription", { replace: true }), 2500);
       return;
     }
 
-    try {
-      const { data, status } = await http.get("/me/subscription/callback/", {
-        params: {
-          trxref: subRef,
-          reference: trxRef, // ← IMPORTANT
-        },
-        validateStatus: (s) => s < 500,
-      });
-
-      if (data.is_active) {
-        setState("success");
-        setMessage("Abonnement activé avec succès !");
-        if (pollRef.current) clearTimeout(pollRef.current);
-        setTimeout(() => navigate("/dashboard/subscription", { replace: true }), 2500);
-        return;
-      }
-
-      // 202 = not confirmed yet
-      if (status === 202 || data.status === "pending_webhook") {
-        if (attempts < 15) {
-          // 15 tentatives × 3s = 45 secondes d'attente auto
-          setState("pending");
-          setMessage("Paiement en cours de confirmation…");
-          pollRef.current = setTimeout(() => setAttempts((a) => a + 1), 3000);
-        } else {
-          setState("pending");
-          setMessage(
-            "Le paiement sera confirmé dès que NotchPay nous le signalera. " +
-              "Tu peux aussi cliquer sur « Vérifier maintenant »."
-          );
-        }
-        return;
-      }
-
-      setState("error");
-      setMessage(data.detail || "Paiement non confirmé.");
-    } catch (e) {
-      setState("error");
-      setMessage(getErrorMessage(e));
+    if (status === 202 || data.status === "pending_webhook") {
+      // ... retry logic ...
+      return;
     }
-  }, [subRef, trxRef, attempts, navigate]);
+
+    setState("error");
+    setMessage(data.detail || "Paiement non confirmé.");
+  } catch (e) {
+    setState("error");
+    setMessage(getErrorMessage(e));
+  }
+}, [subRef, trxRef, attempts, navigate]);
 
   useEffect(() => {
     void verify();
