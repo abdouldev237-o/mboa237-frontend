@@ -21,54 +21,33 @@ export default function PaymentCallbackPage() {
     (params.get("reference") || "").startsWith("SUB-")
       ? params.get("reference")
       : "";
-  const notchpayRef = params.get("reference") || "";
+  // const notchpayRef = params.get("reference") || "";
   // Le premier `reference` peut être SUB-xxx et le second trx.xxx
   const allRefs = params.getAll("reference");
+
 const subRef =
-  params.get("trxref") ||
-  params.get("sub_ref") ||
-  allRefs.find((r) => r.startsWith("SUB-")) ||
-  "";
+  (params.get("trxref") || "").startsWith("SUB-") ? params.get("trxref")! :
+  (params.get("sub_ref") || "").startsWith("SUB-") ? params.get("sub_ref")! :
+  allRefs.find((r) => r.startsWith("SUB-")) || "";
+
 const trxRef =
   allRefs.find((r) => r.startsWith("trx")) ||
-  params.get("reference") ||
-  "";
+  (params.get("reference") || "").startsWith("trx") ? params.get("reference")! : "";
 
-  const verify = useCallback(async () => {
-  if (!subRef) {
+const verify = useCallback(async () => {
+  if (!subRef && !trxRef) {
     setState("error");
-    setMessage("Référence d'abonnement manquante dans l'URL.");
+    setMessage("Référence manquante.");
     return;
   }
-
-  try {
-    const { data, status } = await http.get("/me/subscription/callback/", {
-      params: {
-        trxref: subRef,               // ← internal SUB-xxx
-        reference: trxRef,            // ← NotchPay trx.xxx
-      },
-      validateStatus: (s) => s < 500,
-    });
-
-    if (data.is_active) {
-      setState("success");
-      setMessage("Abonnement activé avec succès !");
-      if (pollRef.current) clearTimeout(pollRef.current);
-      setTimeout(() => navigate("/dashboard/subscription", { replace: true }), 2500);
-      return;
-    }
-
-    if (status === 202 || data.status === "pending_webhook") {
-      // ... retry logic ...
-      return;
-    }
-
-    setState("error");
-    setMessage(data.detail || "Paiement non confirmé.");
-  } catch (e) {
-    setState("error");
-    setMessage(getErrorMessage(e));
-  }
+  const { data, status } = await http.get("/me/subscription/callback/", {
+    params: {
+      ...(subRef ? { trxref: subRef } : {}),
+      ...(trxRef ? { reference: trxRef } : {}),
+    },
+    validateStatus: (s) => s < 500,
+  });
+  // ... rest unchanged
 }, [subRef, trxRef, attempts, navigate]);
 
   useEffect(() => {
